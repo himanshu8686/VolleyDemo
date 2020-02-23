@@ -1,14 +1,17 @@
 package com.yash.volleydemo.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.yash.volleydemo.activities.AnimeActivity;
 import com.yash.volleydemo.model.Anime;
 import com.yash.volleydemo.R;
 
@@ -38,7 +41,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     {
         LayoutInflater layoutInflater= LayoutInflater.from(mContext);
         View view= layoutInflater.inflate(R.layout.anime_row_item,parent,false);
-        MyViewHolder myViewHolder=new MyViewHolder(view);
+        final MyViewHolder myViewHolder=new MyViewHolder(view);
+        myViewHolder.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, AnimeActivity.class);
+
+                // sending data process
+                intent.putExtra("anime_name",mDataList.get(myViewHolder.getAdapterPosition()).getName());
+                intent.putExtra("anime_description",mDataList.get(myViewHolder.getAdapterPosition()).getDescription());
+                intent.putExtra("anime_studio",mDataList.get(myViewHolder.getAdapterPosition()).getStudio());
+                intent.putExtra("anime_category",mDataList.get(myViewHolder.getAdapterPosition()).getCategorie());
+                intent.putExtra("anime_nb_episode",mDataList.get(myViewHolder.getAdapterPosition()).getNb_episode());
+                intent.putExtra("anime_rating",mDataList.get(myViewHolder.getAdapterPosition()).getRating());
+                intent.putExtra("anime_img",mDataList.get(myViewHolder.getAdapterPosition()).getImage_url());
+                mContext.startActivity(intent);
+            }
+        });
+
         return myViewHolder;
     }
 
@@ -65,6 +85,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     {
         TextView anime_name, category  ,rating, studio;
         ImageView  thumbnail;
+        LinearLayout container;
         public MyViewHolder(@NonNull View itemView)
         {
             super(itemView);
@@ -73,6 +94,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                rating=itemView.findViewById(R.id.rating);
                studio=itemView.findViewById(R.id.studio);
                thumbnail=itemView.findViewById(R.id.thumbnail);
+               container=itemView.findViewById(R.id.container);
         }
     }
 }
